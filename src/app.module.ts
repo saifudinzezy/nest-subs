@@ -18,7 +18,17 @@ import * as Redis from 'ioredis';
     PingPongResolvers,
     {
       provide: 'PUB_SUB',
-      useValue: new PubSub(),
+      useFactory: () => {
+        const options = {
+          host: 'localhost',
+          port: 6379,
+        };
+
+        return new RedisPubSub({
+          publisher: new Redis(options),
+          subscriber: new Redis(options),
+        });
+      },
     },
   ],
 })
